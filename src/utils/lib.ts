@@ -11,7 +11,7 @@ export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("10 sec from now")
+    .setExpirationTime("10 minutes")
     .sign(key);
 }
 
@@ -105,7 +105,7 @@ export async function login(formData: FormData) {
   }
 
   // Create the session
-  const expires = new Date(Date.now() + 10 * 1000);
+  const expires = new Date(Date.now() + 600 * 1000);
   const session = await encrypt({ user, expires });
 
   // Save the session in a cookie
