@@ -1,10 +1,9 @@
-import React from "react";
-
-import { login } from "@/utils/lib";
+import { register } from "@/utils/lib";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import React from "react";
 
-const App = async () => {
+const RegisterPage = () => {
   return (
     <main className="w-full h-screen">
       <div className="w-full h-full container mx-auto flex items-center justify-center">
@@ -12,17 +11,29 @@ const App = async () => {
           action={async (formData: FormData) => {
             "use server";
 
-            const res = await login(formData);
+            const res = await register(formData);
 
-            if (res.error && !res.success)
-              return console.log(`Error: ${res.message}`);
+            if (res?.error && !res?.success) {
+              return;
+            }
 
-            if (res.res && res.success && !res.error) {
-              redirect("/home");
+            if (res?.res && !res.error && res.success) {
+              redirect("/");
             }
           }}
           className="flex flex-col items-start gap-10"
         >
+          <label htmlFor="name" className="flex items-center gap-5">
+            Name:
+            <input
+              type="name"
+              id="name"
+              name="name"
+              placeholder="Name"
+              className="bg-transparent border border-gray-50/50 px-2 py-1 rounded-md"
+            />
+          </label>
+
           <label htmlFor="email" className="flex items-center gap-5">
             Email:
             <input
@@ -53,11 +64,11 @@ const App = async () => {
           </button>
 
           <Link
-            href="/auth/register"
+            href="/"
             type="submit"
             className="w-full text-pink-500 rounded-md py-2  transition-all font-medium flex items-center justify-center"
           >
-            Sign Up
+            Log In
           </Link>
         </form>
       </div>
@@ -65,4 +76,4 @@ const App = async () => {
   );
 };
 
-export default App;
+export default RegisterPage;
